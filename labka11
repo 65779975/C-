@@ -1,0 +1,87 @@
+#include <iostream> 
+#include <cstdlib> 
+#include <ctime> 
+ 
+using namespace std; 
+ 
+void shaker(int arr[], int Size) { 
+    bool swapped = true; 
+    int start = 0; 
+    int end = Size - 1; 
+    while (swapped) { 
+        swapped = false; 
+        for (int i = start; i < end; i++) { 
+            if (arr[i] > arr[i + 1]) { 
+                swap(arr[i], arr[i + 1]); 
+                swapped = true; 
+            } 
+        } 
+        end--; 
+        for (int i = end - 1; i >= start; i--) { 
+            if (arr[i] > arr[i + 1]) { 
+                swap(arr[i], arr[i + 1]); 
+                swapped = true; 
+            } 
+        } 
+        start++; 
+    } 
+} 
+ 
+void adjustArray(int arr[], int Size) { 
+    int* newArr = new int[Size]; 
+    for (int i = 0; i < Size; i++) { 
+        newArr[i] = -1; 
+    } 
+ 
+    for (int i = 0; i < Size; i++) { 
+        int newIndex; 
+        if (arr[i] % 2 == 0) { 
+            newIndex = (i + 3) % Size;  
+        } 
+        else { 
+            newIndex = (i - 3 + Size) % Size;  
+        } 
+         
+        while (newArr[newIndex] != -1) { 
+            newIndex = (newIndex + 1) % Size; 
+        } 
+        newArr[newIndex] = arr[i]; 
+    } 
+ 
+    
+    for (int i = 0; i < Size; i++) { 
+        arr[i] = newArr[i]; 
+    } 
+    delete[] newArr; 
+} 
+ 
+int main() { 
+    srand(time(0)); 
+    int Size; 
+    cout << "Enter Size: "; 
+    cin >> Size; 
+    int* arr = new int[Size]; 
+    cout << "Your array: "; 
+    for (int i = 0; i < Size; i++) { 
+        arr[i] = rand() % 100; 
+        cout << arr[i] << " "; 
+    } 
+    cout << endl; 
+ 
+    shaker(arr, Size); 
+    cout << "Sorted array: "; 
+    for (int i = 0; i < Size; i++) { 
+        cout << arr[i] << " "; 
+    } 
+    cout << endl; 
+ 
+    adjustArray(arr, Size); 
+    cout << "Adjusted array: "; 
+    for (int i = 0; i < Size; i++) { 
+        cout << arr[i] << " "; 
+    } 
+    cout << endl; 
+ 
+    delete[] arr; 
+    return 0; 
+}
